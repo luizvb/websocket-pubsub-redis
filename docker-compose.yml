@@ -1,0 +1,32 @@
+version: "3.4"
+services:
+
+  # WebSocket With Redis Conn.
+  pubsub:
+    image: pubsub-ws
+    container_name: pubsub-ws
+    build: .
+    ports:
+      - "5000:5000"
+      - "9229:9229"
+    volumes:
+      - type: bind
+        source: ./application
+        target: /app
+    networks:
+      - mzgroup
+  
+  # Redis
+  redis:
+    image: redis:5-alpine
+    container_name: redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - mzgroup
+    restart: always
+      
+networks:
+  pubsub:
+    external:
+      name: mzgroup
